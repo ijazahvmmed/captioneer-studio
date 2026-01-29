@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Node
+node_modules/
+dist/
+.DS_Store
+
+# Captioneer
+uploads/
+exports/
+projects/
+static/fonts_downloaded_marker
+*.log
+temp_output/
+*.mov
