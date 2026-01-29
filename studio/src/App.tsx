@@ -455,7 +455,13 @@ function App() {
   const [editText, setEditText] = useState('');
   const [activeTab, setActiveTab] = useState<'style' | 'motion' | 'position'>('style');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
-  const [apiBaseUrl, setApiBaseUrl] = useState<string>(() => localStorage.getItem('captioneer_api_url') || '');
+  const [apiBaseUrl, setApiBaseUrl] = useState<string>(() => {
+    const saved = localStorage.getItem('captioneer_api_url');
+    // If user has saved one, use it. 
+    if (saved !== null) return saved;
+    // Otherwise, if in production (Netlify), use Render backend. If dev, use proxy (empty).
+    return import.meta.env.PROD ? 'https://captioneer-studio.onrender.com' : '';
+  });
   const [showSettings, setShowSettings] = useState(false);
 
   // Persist API URL
