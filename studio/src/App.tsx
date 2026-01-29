@@ -455,6 +455,19 @@ function App() {
   const [editText, setEditText] = useState('');
   const [activeTab, setActiveTab] = useState<'style' | 'motion' | 'position'>('style');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  const [apiBaseUrl, setApiBaseUrl] = useState<string>(() => localStorage.getItem('captioneer_api_url') || '');
+  const [showSettings, setShowSettings] = useState(false);
+
+  // Persist API URL
+  useEffect(() => {
+    localStorage.setItem('captioneer_api_url', apiBaseUrl);
+  }, [apiBaseUrl]);
+
+  // Helper for API calls
+  const apiFetch = useCallback(async (endpoint: string, options?: RequestInit) => {
+    const url = apiBaseUrl ? `${apiBaseUrl.replace(/\/$/, '')}${endpoint}` : endpoint;
+    return fetch(url, options);
+  }, [apiBaseUrl]);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const animationRef = useRef<number>(0);
@@ -504,7 +517,7 @@ function App() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const res = await apiFetch('/api/upload', { method: 'POST', body: formData });
       if (!res.ok) throw new Error('Upload failed');
 
       const data = await res.json();
@@ -525,7 +538,7 @@ function App() {
       transcribeForm.append('video_path', data.path);
       transcribeForm.append('model', 'small');
 
-      const transcribeRes = await fetch('/api/transcribe', { method: 'POST', body: transcribeForm });
+      const transcribeRes = await apiFetch('/api/transcribe', { method: 'POST', body: transcribeForm });
 
       if (transcribeRes.ok) {
         const transcribeData = await transcribeRes.json();
@@ -559,7 +572,7 @@ function App() {
       console.log('[EXPORT] Sending style:', project.style);
       console.log('[EXPORT] Font weight:', project.style.font_weight);
 
-      const res = await fetch('/api/export', {
+      const res = await apiFetch('/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -590,7 +603,7 @@ function App() {
         if (downloaded) return;
 
         try {
-          const statusRes = await fetch(`/api/export/${job_id}/status`);
+          const statusRes = await apiFetch(`/api/export/${job_id}/status`);
           const status = await statusRes.json();
           setExportProgress(status.progress);
 
@@ -708,8 +721,58 @@ function App() {
               🔄 New
             </button>
           )}
+          )}
+
+          <button
+            onClick={() => setShowSettings(!showSettings)}
+            className="btn btn-secondary"
+            title="Settings"
+          >
+            ⚙️
+          </button>
         </div>
       </header>
+
+      {/* API Settings Modal */}
+      {
+        showSettings && (
+          <div style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(0,0,0,0.7)', zIndex: 1000,
+            display: 'flex', alignItems: 'center', justifyContent: 'center'
+          }}>
+            <div style={{
+              background: 'var(--studio-panel)', padding: '2rem', borderRadius: '12px',
+              width: '400px', border: '1px solid var(--studio-border)'
+            }}>
+              <h3 style={{ marginTop: 0, color: 'var(--studio-text)' }}>⚙️ Settings</h3>
+
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Backend API URL</label>
+                <input
+                  type="text"
+                  value={apiBaseUrl}
+                  onChange={(e) => setApiBaseUrl(e.target.value)}
+                  placeholder="https://your-ngrok-url.ngrok-free.app"
+                  style={{
+                    width: '100%', padding: '0.75rem', borderRadius: '8px',
+                    border: '1px solid var(--studio-border)', background: 'var(--studio-input-bg)',
+                    color: 'var(--studio-text)'
+                  }}
+                />
+                <p style={{ fontSize: '0.8rem', color: 'var(--studio-text-muted)', marginTop: '0.5rem' }}>
+                  If you are running the backend locally, leave this empty.
+                  If you are sharing with friends via Ngrok, paste the Ngrok URL here.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+                <button onClick={() => setShowSettings(false)} className="btn btn-primary">Done</button>
+              </div>
+            </div>
+          </div>
+        )
+      }
 
       {/* Main */}
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
@@ -1102,7 +1165,7 @@ function App() {
           }
         }
       `}</style>
-    </div>
+    </div >
   );
 }
 
