@@ -161,6 +161,21 @@ app.mount("/exports", StaticFiles(directory=EXPORT_DIR), name="exports")
 
 
 # ============================================================================
+# Root & Health
+# ============================================================================
+
+@app.get("/")
+async def root():
+    """Root endpoint to check if server is running."""
+    return {
+        "status": "online",
+        "service": "Captioneer Studio Backend",
+        "version": "1.0.0",
+        "documentation": "/docs"
+    }
+
+
+# ============================================================================
 # Health Check
 # ============================================================================
 
