@@ -161,7 +161,109 @@ input[type="range"]::-webkit-slider-thumb:active {
 
 .ui-grid-bg {
   background-color: #f3f4f6;
-  background-image: linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+  background-image:
+    linear-gradient(#e5e7eb 1px, transparent 1px),
+    linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
   background-size: 20px 20px;
   background-position: center center;
+}
+
+/* =========================================
+   RESPONSIVE MOBILE OPTIMIZATIONS
+   ========================================= */
+
+/* Default Desktop Layout Classes (to replace inline styles) */
+.studio-container {
+  min-height: 100vh;
+  background: var(--studio-bg);
+  color: var(--studio-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.canvas-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.controls-area {
+  width: 340px;
+  background: var(--studio-panel);
+  border-left: 1px solid var(--studio-border);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile Overrides */
+@media (max-width: 768px) {
+
+  /* Global text size limit */
+  body,
+  input,
+  select,
+  button,
+  .btn {
+    font-size: 14px !important;
+  }
+
+  .studio-container {
+    height: 100vh;
+    /* Lock height to viewport to prevent scroll on body */
+    overflow: hidden;
+  }
+
+  .main-layout {
+    flex-direction: column;
+  }
+
+  /* Canvas Config: Smaller, Top */
+  .canvas-area {
+    flex: none;
+    /* Don't grow freely */
+    height: 35vh;
+    /* Fixed height for preview (approx 35%) */
+    padding: 0.5rem !important;
+    background-size: 10px 10px;
+    /* Smaller grid */
+    border-bottom: 1px solid var(--studio-border);
+  }
+
+  /* Controls Config: Larger, Bottom, Scrollable */
+  .controls-area {
+    width: 100% !important;
+    height: 65vh;
+    /* Remaining height */
+    border-left: none !important;
+    border-top: none;
+    /* border-bottom of canvas handles logic */
+  }
+
+  /* Adjust Header */
+  header {
+    padding: 0.5rem 1rem !important;
+  }
+
+  header h1,
+  header span {
+    font-size: 1rem !important;
+  }
+
+  /* Hide non-essential header items on very small screens if needed */
+  .header-actions {
+    gap: 0.5rem !important;
+  }
+
+  .btn {
+    padding: 0.4rem 0.8rem;
+  }
 }

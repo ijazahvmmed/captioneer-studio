@@ -663,7 +663,7 @@ function App() {
   const previewFontStyle = FONTS.find(f => f.value === project.style.font_family)?.style || "'Inter', sans-serif";
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--studio-bg)', color: 'var(--studio-text)', fontFamily: '"Inter", system-ui, sans-serif', display: 'flex', flexDirection: 'column' }}>
+    <div className="studio-container">
 
       {/* Header */}
       <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1.5rem', background: 'var(--studio-panel)', borderBottom: '1px solid var(--studio-border)' }}>
@@ -721,7 +721,7 @@ function App() {
               🔄 New
             </button>
           )}
-          )}
+
 
           <button
             onClick={() => setShowSettings(!showSettings)}
@@ -775,10 +775,10 @@ function App() {
       }
 
       {/* Main */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <div className="main-layout">
 
         {/* Canvas */}
-        <div className="ui-grid-bg" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+        <div className="ui-grid-bg canvas-area">
           <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05)', background: '#000' }}>
             {hasVideo ? (
               <>
@@ -828,7 +828,7 @@ function App() {
         </div>
 
         {/* Control Panel */}
-        <div style={{ width: '340px', background: 'var(--studio-panel)', borderLeft: '1px solid var(--studio-border)', display: 'flex', flexDirection: 'column' }}>
+        <div className="controls-area">
 
           {/* Tabs */}
           <div style={{ display: 'flex', borderBottom: '1px solid var(--studio-border)' }}>
