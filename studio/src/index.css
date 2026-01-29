@@ -230,22 +230,27 @@ input[type="range"]::-webkit-slider-thumb:active {
   .canvas-area {
     flex: none;
     /* Don't grow freely */
-    height: 35vh;
-    /* Fixed height for preview (approx 35%) */
-    padding: 0.5rem !important;
+    height: 40vh;
+    /* Increased to 40% for better visibility */
+    padding: 1rem !important;
     background-size: 10px 10px;
     /* Smaller grid */
     border-bottom: 1px solid var(--studio-border);
+    overflow: hidden;
+    /* Prevent spill */
   }
 
   /* Controls Config: Larger, Bottom, Scrollable */
   .controls-area {
     width: 100% !important;
-    height: 65vh;
+    height: 60vh;
     /* Remaining height */
     border-left: none !important;
     border-top: none;
-    /* border-bottom of canvas handles logic */
+    overflow-y: auto;
+    /* Scrollable controls */
+    padding-bottom: 2rem;
+    /* safe area */
   }
 
   /* Adjust Header */
@@ -265,5 +270,13 @@ input[type="range"]::-webkit-slider-thumb:active {
 
   .btn {
     padding: 0.4rem 0.8rem;
+  }
+
+  /* Scale down video container if needed */
+  video {
+    max-height: 30vh !important;
+    /* Slightly less than container to ensure padding */
+    width: auto;
+    max-width: 100%;
   }
 }

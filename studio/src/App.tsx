@@ -779,7 +779,7 @@ function App() {
 
         {/* Canvas */}
         <div className="ui-grid-bg canvas-area">
-          <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05)', background: '#000' }}>
+          <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05)', background: '#000', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {hasVideo ? (
               <>
                 <video
@@ -792,7 +792,7 @@ function App() {
                       setProject({ video_duration: video.duration });
                     }
                   }}
-                  style={{ maxWidth: '420px', maxHeight: '65vh', display: 'block' }}
+                  style={{ maxWidth: '100%', maxHeight: '100%', display: 'block', objectFit: 'contain' }}
                 />
 
                 {/* Caption Overlay */}
@@ -816,7 +816,7 @@ function App() {
                 </div>
               </>
             ) : (
-              <div style={{ width: '320px', height: '520px', background: 'linear-gradient(180deg, #1e1e2e 0%, #0a0a0f 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#6b7280', gap: '1.5rem' }}>
+              <div style={{ width: '100%', height: '100%', maxWidth: '100%', aspectRatio: '9/16', background: 'linear-gradient(180deg, #1e1e2e 0%, #0a0a0f 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#6b7280', gap: '1.5rem' }}>
                 <div style={{ fontSize: '4rem', opacity: 0.5 }}>🎬</div>
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>Upload a video</div>
